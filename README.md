@@ -113,75 +113,91 @@ This is helpful with unpredictable user input.
 
 # Javadocs and Method Documentation
 
-Documentation helps programmers understand what a method does, what its inputs mean, and what it returns. Clear documentation becomes increasingly important as programs get larger, or when other people need to use your code.
+When writing methods, it’s important that others — or future you! — can understand what they do. Javadocs are the official, structured format for documenting Java methods, classes, and libraries.
 
-Not every method needs a full Javadoc block. Use the right level of documentation depending on the method’s complexity and how it will be used.
+They serve two purposes:
 
-## When to Use Javadoc vs Regular Comments
+1. They help humans understand your code.
+2. Tools (like VS Code, IntelliJ, and Javadoc generators) can extract them to produce documentation pages.
 
-### Simple helper methods  
-Short methods with no parameters, no return values, and extremely obvious behaviour can use a single-line comment.
+Javadocs look something like this:
 
 ```java
-// Draws a tree using basic shapes
+/**
+ * Prints a line containing the given number of stars.
+ * @param length how many stars to print
+ */
+private void starLine(int length) {
+    for (int i = 0; i < length; i++) {
+        System.out.print("*");
+    }
+    System.out.println();
+}
+```
+
+## What Are Javadocs?
+
+Javadocs give programmers a consistent, structured way to document:
+
+- what a method does  
+- what each parameter means  
+- what value is returned  
+- what exceptions might occur  
+
+Because the format is standardized, IDEs can display pop‑up documentation when a method is hovered or called.
+
+In short, Javadocs are structured comments that describe how to use a method.
+
+## When Should You Use Javadocs?
+
+### Simple methods
+
+If a method is small, obvious, and has no parameters or return values, a short single-line comment is fine:
+
+```java
+// Draws a simple tree shape
 public void drawTree() {
     rect(200, 400, 30, 90);
     ellipse(215, 360, 100, 100);
 }
 ```
 
-### Medium-complexity methods  
-Use a Javadoc block when a method:
-- takes parameters  
-- returns a value  
-- performs logic not fully obvious from the name  
-- will be reused  
+### Methods with parameters or return values
 
-```java
-/**
- * Draws a sun at the given position.
- * @param x the x-coordinate of the sun’s centre
- * @param y the y-coordinate of the sun’s centre
- */
-public void drawSun(int x, int y) {
-    fill(255, 204, 0);
-    ellipse(x, y, 80, 80);
-}
-```
-
-### Detailed documentation (ICS4U
-
-Full Javadocs become essential when working on:
-- multi-class projects
-- libraries
-- algorithms with constraints or validation
-- public-facing APIs
-
-For our purposes, focus on documenting parameterized and return-value methods.
-
-<br>
-
-## Javadoc Format
-
-A typical Javadoc block includes:
-- a short summary sentence  
-- one `@param` tag per parameter  
-- a `@return` tag for methods that return something  
+These should **always** have Javadocs so users understand how to call them correctly:
 
 ```java
 /**
  * Returns true if the number is even.
  * @param n the integer to check
- * @return true if n is even; false if odd
+ * @return true if n is even; false otherwise
  */
 private boolean isEven(int n) {
     return n % 2 == 0;
 }
 ```
-<br>
+
+### Methods with non-obvious logic
+
+Document methods that have:
+
+- loops  
+- conditions  
+- validation  
+- potential exceptions  
+
+
+## What Javadocs Contain
+
+A Javadoc block typically includes:
+
+- A summary sentence  
+- One `@param` tag per parameter  
+- One `@return` tag for return methods  
+- Optional `@throws` for exceptions  
 
 ## Examples of Javadocs
-Here are some examples of methods and their corresponding Javadocs.
+Here are some examples of methods and corresponding Javadocs:
 
 ### No return value, one parameter
 ```java
@@ -244,11 +260,8 @@ private int safeSqrt(int x) {
     return (int) Math.sqrt(x);
 }
 ```
-<br>
 
-## Good vs Bad Javadocs
-
-### Bad examples
+### Making improvements
 This example repeats the method name with no meaningful description. No mention of parameter or return values below:
 
 ```java
@@ -260,22 +273,7 @@ private boolean isEven(int n) {
 }
 ```
 
-This example has parameters and return descriptions that are empty and uninformative:
-
-```java
-/**
- * Adds numbers.
- * @param a
- * @param b
- * @return
- */
-private int add(int a, int b) {
-    return a + b;
-}
-```
-
-### Good examples
-A much better version of the `isEven()` method compared to above:
+A much better version would look like this:
 ```java
 /**
  * Determines whether the given integer is divisible by 2.
@@ -284,36 +282,6 @@ A much better version of the `isEven()` method compared to above:
  */
 private boolean isEven(int n) {
     return n % 2 == 0;
-}
-```
-
-And the `add()` method:
-```java
-/**
- * Returns the sum of the two given integers.
- * @param a the first addend
- * @param b the second addend
- * @return the total of a and b
- */
-private int add(int a, int b) {
-    return a + b;
-}
-```
-
-See how the Javadoc adds clarity to how a method should be used:
-```java
-/**
- * Returns true if the string contains at least one digit.
- * @param s the string to examine
- * @return true if s contains any numeric character; false otherwise
- */
-private boolean containsDigit(String s) {
-    for (int i = 0; i < s.length(); i++) {
-        if (Character.isDigit(s.charAt(i))) {
-            return true;
-        }
-    }
-    return false;
 }
 ```
 
