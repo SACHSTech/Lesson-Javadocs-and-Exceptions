@@ -85,11 +85,13 @@ Why learn about exceptions?
 - understanding common exceptions helps you avoid them  
 
 ### Handling Runtime Errors with try/catch
-You can also try to handle some of them in your program by using `try` and `catch`.
+You can also try to handle some of them in your program by using `try` and `catch`. 
 
-A `try` block allows you to run code that *might* cause an exception.  
+A `try` block runs code that *might* cause an exception.  
 
-A `catch` block lets you recover gracefully instead of crashing.
+A `catch` block runs only **if an exception actually occurs**, allowing your program to keep going instead of crashing.
+
+We mostly use `try`/`catch` to prevent user input from crashing the program or to handle special cases where a method receives invalid values.
 
 ```java
 public void run() {
@@ -102,11 +104,30 @@ public void run() {
 }
 ```
 
-- Code inside `try` executes normally  
-- If an exception occurs, Java jumps to `catch`  
-- The program keeps running instead of crashing
+### Important Notes About try/catch
 
-This is helpful with unpredictable user input.
+- Code inside the `try` runs normally.  
+- If an exception occurs, Java jumps to `catch` and runs that block.  
+- After the `catch` finishes, the program continues normally after the whole try/catch.  
+- `try`/`catch` does not repeat automatically. Thus, if you want to keep asking until the user enters something valid, you must put the try/catch inside a loop:
+
+```java
+while (true) {
+    try {
+        int n = readInt("Enter a number: ");
+        return n;    // success!
+    } catch (Exception e) {
+        System.out.println("Invalid input. Try again.");
+    }
+}
+```
+
+In this example:
+
+- the loop repeats  
+- the `try` runs each time  
+- if input is valid, return ends the method  
+- if invalid, the `catch` runs and the loop continues  
 
 <br>
 
@@ -346,8 +367,8 @@ private boolean hasVowel(String word) {
 }
 ```
 
-## Problem 4 — Javadocs + Parameter Constraints
-Write full Javadocs including when the method throws an exception.
+## Problem 4 — Javadocs for a Method with Constraints
+Add full Javadocs, including description, parameter details, return value, and the exception thrown.
 
 ```java
 private int safePercent(int part, int whole) {
@@ -359,19 +380,33 @@ private int safePercent(int part, int whole) {
 ```
 
 ## Problem 5 — Write Both the Javadocs and the Method
-Write the missing method and its complete Javadocs.
+Write the missing method and its complete Javadocs.  
+The method returns the first 3 characters of `s` repeated `times` times.  
+Assume `s` has at least 3 characters.
 
 ```java
 /**
  * TODO: Write full Javadocs here.
  */
 private String frontTimes(String s, int times) {
-    // TODO: return the first 3 characters of s repeated 'times' times.
+    // TODO
 }
 ```
 
-## Problem 6 — Identify the Error Type
-For each line, state compile-time error or runtime error.
+## Problem 6 — Javadocs for a Method with Validation  
+Write full Javadocs explaining what the method does, how it uses parameters, and under what conditions it throws an exception.
+
+```java
+private int difference(int a, int b) {
+    if (a < b) {
+        throw new IllegalArgumentException("a must be >= b");
+    }
+    return a - b;
+}
+```
+
+## Problem 7 — Identify the Error Type
+For each line, state whether the issue is a **compile‑time error** or a **runtime error**.
 
 ```
 a) int x = "hello";
@@ -381,29 +416,34 @@ d) String s = "ABC"; char c = s.charAt(5);
 e) int n = Integer.parseInt("xyz");
 ```
 
-## Problem 7 — Safe Division  
-Write a method that divides `a` by `b`.  
-**HINT:** If `b` is 0, either throw an `ArithmeticException` or return a safe fallback value (you choose, but document it).
+
+## Problem 8 — First try/catch  
+Write a method that asks the user for an integer and returns it.  
+If the user types something invalid (letters, symbols, blank input, etc.), the method should print an error message and return `–1` instead of crashing.
+
+**HINT:**  
+Use a `try/catch` around `readInt()` exactly like the example shown in the lesson.
 
 ```java
-private int safeDivide(int a, int b) {
+private int safeReadInt(String prompt) {
     // TODO
 }
 ```
 
-## Problem 8 — Repeated Safe Input  
-Write a method that keeps asking the user for an integer until the user enters a valid whole number.  
-**HINT:** Use a `try/catch` around `readInt()` to handle invalid input.
+Example behaviour:
 
-```java
-private int readSafeInt(String prompt) {
-    // TODO
-}
 ```
+Enter a number: hello
+Invalid input.
+-1
+```
+
 
 ## Problem 9 — Throwing Your Own Exception  
-Write a method to compute the area of a circle.  
-**HINT:** If `r` is negative, throw an `IllegalArgumentException` with a helpful message.
+Write a method that computes the area of a circle using the formula  
+`area = π * r * r`.
+
+If `r` is negative, throw an `IllegalArgumentException` with a helpful message.
 
 ```java
 private double areaOfCircle(double r) {
@@ -411,14 +451,11 @@ private double areaOfCircle(double r) {
 }
 ```
 
-## Problem 10 — Safe String Index Lookup  
-Write a method that safely returns the character at a given index in a string.  
-Do **not** let the program crash.
 
-**HINT:**  
-- If the index is valid, return the character at that position.  
-- If the index is invalid (negative or too large), return `'?'`.  
-- Do **not** use exceptions — handle it with logic and bounds checking.
+## Problem 10 — Safe String Index Lookup  
+Write a method that safely returns the character at a given index.  
+If the index is invalid (negative or past the end), return `'?'`.  
+Do not use exceptions here. Instead, use normal `if` conditions.
 
 ```java
 private char safeIndex(String word, int index) {

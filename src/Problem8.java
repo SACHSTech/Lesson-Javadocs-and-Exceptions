@@ -1,3 +1,3 @@
-private int readSafeInt(String prompt) {
+private int safeDivide(int a, int b) {
     // TODO
 }
