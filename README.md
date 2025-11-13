@@ -1,4 +1,4 @@
-# Lesson 4: Javadocs and Exceptions  
+# Javadocs, Errors, and Exceptions  
 This lesson introduces two important skills that help you write clearer and more reliable programs:
 
 - documenting methods using Javadocs  
@@ -46,10 +46,9 @@ A runtime error (exception) happens **while the program is running**. The code c
 
 Runtime errors are more common when:
 
-- the program interacts with the user  
-- input is unpredictable  
-- the program accesses strings using indexes or arrays
-- math operations involve special cases (e.g., dividing by zero)
+- the program interacts with user input
+- string or array indexes are misused
+- calculations involve restricted operations (division, square roots, etc.)
 
 Common runtime exceptions include:
 
@@ -73,9 +72,9 @@ int x = Integer.parseInt("abc");   // cannot convert
 ```
 private int sqrt(int x) {
     if (x < 0) {
-        throw new IllegalArgumentException("negative number");
+        throw new IllegalArgumentException("x must be non-negative");
     }
-    return x * x;
+    return (int) Math.sqrt(x);
 }
 ```
 
@@ -144,9 +143,110 @@ Javadocs give programmers a consistent, structured way to document:
 - what value is returned  
 - what exceptions might occur  
 
-Because the format is standardized, IDEs can display pop‑up documentation when a method is hovered or called.
+Because the format is standardized, IDEs like VS Code can display pop‑up documentation when a method is hovered or called, like this:
+
+![javadocs](.media/01.png)
 
 In short, Javadocs are structured comments that describe how to use a method.
+
+## What Javadocs Contain
+
+A Javadoc block typically includes:
+
+- A summary sentence  
+- One `@param` tag per parameter  
+- One `@return` tag for return methods  
+- Optional `@throws` for exceptions  
+
+### Examples of Javadocs
+Here are some examples of methods and corresponding Javadocs:
+
+#### No return value, one parameter
+```java
+/**
+ * Prints a line containing the given number of stars.
+ * @param length how many stars to print
+ */
+private void starLine(int length) {
+    for (int i = 0; i < length; i++) {
+        System.out.print("*");
+    }
+    System.out.println();
+}
+```
+
+#### Multiple parameters
+```java
+/**
+ * Returns the larger of two integers.
+ * @param a the first number
+ * @param b the second number
+ * @return the larger of a and b
+ */
+private int max(int a, int b) {
+    return (a > b) ? a : b;
+}
+```
+
+#### More complex logic
+```java
+/**
+ * Counts how many vowels appear in the given uppercase string.
+ * @param word the string to examine; should be uppercase
+ * @return the number of vowels (A, E, I, O, U)
+ */
+private int countVowels(String word) {
+    int count = 0;
+    for (int i = 0; i < word.length(); i++) {
+        char c = word.charAt(i);
+        if ("AEIOU".indexOf(c) != -1) {
+            count++;
+        }
+    }
+    return count;
+}
+```
+
+#### Validation + `IllegalArgumentException`
+```java
+/**
+ * Returns the square root of x as an integer approximation.
+ * @param x the number to square root; must be non-negative
+ * @return an integer representing the approximate square root
+ * @throws IllegalArgumentException if x is negative
+ */
+private int safeSqrt(int x) {
+    if (x < 0) {
+        throw new IllegalArgumentException("x must be non-negative");
+    }
+    return (int) Math.sqrt(x);
+}
+```
+
+#### Making improvements
+This example repeats the method name with no meaningful description. No mention of parameter or return values below:
+
+```java
+/**
+ * Checks for even.
+ */
+private boolean isEven(int n) {
+    return n % 2 == 0;
+}
+```
+
+A much better version would look like this:
+```java
+/**
+ * Determines whether the given integer is divisible by 2.
+ * @param n the number to evaluate
+ * @return true if n is an even number, false otherwise
+ */
+private boolean isEven(int n) {
+    return n % 2 == 0;
+}
+```
+
 
 ## When Should You Use Javadocs?
 
@@ -186,113 +286,14 @@ Document methods that have:
 - validation  
 - potential exceptions  
 
+### In Summary
 
-## What Javadocs Contain
-
-A Javadoc block typically includes:
-
-- A summary sentence  
-- One `@param` tag per parameter  
-- One `@return` tag for return methods  
-- Optional `@throws` for exceptions  
-
-## Examples of Javadocs
-Here are some examples of methods and corresponding Javadocs:
-
-### No return value, one parameter
-```java
-/**
- * Prints a line containing the given number of stars.
- * @param length how many stars to print
- */
-private void starLine(int length) {
-    for (int i = 0; i < length; i++) {
-        System.out.print("*");
-    }
-    System.out.println();
-}
-```
-
-### Multiple parameters
-```java
-/**
- * Returns the larger of two integers.
- * @param a the first number
- * @param b the second number
- * @return the larger of a and b
- */
-private int max(int a, int b) {
-    return (a > b) ? a : b;
-}
-```
-
-### More complex logic
-```java
-/**
- * Counts how many vowels appear in the given uppercase string.
- * @param word the string to examine; should be uppercase
- * @return the number of vowels (A, E, I, O, U)
- */
-private int countVowels(String word) {
-    int count = 0;
-    for (int i = 0; i < word.length(); i++) {
-        char c = word.charAt(i);
-        if ("AEIOU".indexOf(c) != -1) {
-            count++;
-        }
-    }
-    return count;
-}
-```
-
-### Validation + IllegalArgumentException
-```java
-/**
- * Returns the square root of x as an integer approximation.
- * @param x the number to square root; must be non-negative
- * @return an integer representing the approximate square root
- * @throws IllegalArgumentException if x is negative
- */
-private int safeSqrt(int x) {
-    if (x < 0) {
-        throw new IllegalArgumentException("x must be non-negative");
-    }
-    return (int) Math.sqrt(x);
-}
-```
-
-### Making improvements
-This example repeats the method name with no meaningful description. No mention of parameter or return values below:
-
-```java
-/**
- * Checks for even.
- */
-private boolean isEven(int n) {
-    return n % 2 == 0;
-}
-```
-
-A much better version would look like this:
-```java
-/**
- * Determines whether the given integer is divisible by 2.
- * @param n the number to evaluate
- * @return true if n is an even number, false otherwise
- */
-private boolean isEven(int n) {
-    return n % 2 == 0;
-}
-```
-
-## In Summary
-
-Use single-line comments for:
+#### Use single-line comments for:
 - simple drawing helpers
 - trivial one-liners
 - methods with no parameters or return values that are obvious from their name
 
-Use full Javadocs for:
+#### Use full Javadocs for:
 - any method with parameters  
 - any method with a return value  
 - any method involving clear logic or validation  
@@ -301,106 +302,108 @@ Use full Javadocs for:
 
 <br>
 
-# Practice Problems
+# Practice Problems — Javadocs & Exceptions
 
-Complete the following exercises using today’s concepts.
+Complete the following problems using the concepts from today’s lesson.
 
-## Problem 1 — Add Javadocs
-Add proper Javadoc comments above each method.
-
-```java
-private int quadruple(int n) {
-    return n * 4;
-}
-
-private boolean startsWithB(String word) {
-    return word.startsWith("B");
-}
-```
-
-## Problem 2 — Identify Error Type
-Indicate whether each example is a compile‑time error or a runtime error.
-
-```
-1. int x = "hello";
-2. int x = 10 / 0;
-3. private int f() { }
-4. String s = "ABC"; char c = s.charAt(10);
-5. int n = Integer.parseInt("xyz");
-```
-
-## Problem 3 — Safe Division with Error Handling
-Write a method that divides two integers and returns 0 if division by zero occurs.
+## Problem 1 — Add Javadocs to Simple Methods
+Write proper Javadoc comments above each of the following simple methods.
 
 ```java
-public void run() {
-    System.out.println(safeDivide(10, 2));
-    System.out.println(safeDivide(10, 0));
+private int triple(int n) {
+    return n * 3;
 }
 
+private boolean isUppercase(String s) {
+    return s.equals(s.toUpperCase());
+}
+```
+
+## Problem 2 — Javadocs with Multiple Parameters
+Add full Javadocs describing the behaviour, parameters, and return value.
+
+```java
+private int max3(int a, int b, int c) {
+    int max = a;
+    if (b > max) max = b;
+    if (c > max) max = c;
+    return max;
+}
+```
+
+## Problem 3 — Javadocs for Non-Obvious Logic
+Write complete Javadocs explaining what *really* happens.
+
+```java
+private boolean hasVowel(String word) {
+    for (int i = 0; i < word.length(); i++) {
+        char c = Character.toUpperCase(word.charAt(i));
+        if ("AEIOU".indexOf(c) != -1) {
+            return true;
+        }
+    }
+    return false;
+}
+```
+
+## Problem 4 — Javadocs + Parameter Constraints
+Write full Javadocs including when the method throws an exception.
+
+```java
+private int safePercent(int part, int whole) {
+    if (whole == 0) {
+        throw new IllegalArgumentException("whole must be non-zero");
+    }
+    return (part * 100) / whole;
+}
+```
+
+## Problem 5 — Write Both the Javadocs and the Method
+Write the missing method and its complete Javadocs.
+
+```java
+/**
+ * TODO: Write full Javadocs here.
+ */
+private String frontTimes(String s, int times) {
+    // TODO: return the first 3 characters of s repeated 'times' times.
+}
+```
+
+## Problem 6 — Identify the Error Type
+For each line, state compile-time error or runtime error.
+
+```
+a) int x = "hello";
+b) int x = 10 / 0;
+c) private int f() { }
+d) String s = "ABC"; char c = s.charAt(5);
+e) int n = Integer.parseInt("xyz");
+```
+
+## Problem 7 — Safe Division  
+Write a method that divides `a` by `b`.  
+**HINT:** If `b` is 0, either throw an `ArithmeticException` or return a safe fallback value (you choose, but document it).
+
+```java
 private int safeDivide(int a, int b) {
     // TODO
 }
 ```
 
-## Problem 4 — Repeated Safe Input
-Write a method that keeps asking the user for an integer until they enter a valid one.
+## Problem 8 — Repeated Safe Input  
+Write a method that keeps asking the user for an integer until the user enters a valid whole number.  
+**HINT:** Use a `try/catch` around `readInt()` to handle invalid input.
 
 ```java
-public void run() {
-    int value = readSafeInt("Enter a number: ");
-    System.out.println(value);
-}
-
 private int readSafeInt(String prompt) {
     // TODO
 }
 ```
 
-## Problem 5 — Safe Character Access
-Return a character at the given index, or `'?'` if the index is invalid.
-
-```java
-public void run() {
-    System.out.println(safeChar("HELLO", 1));  // E
-    System.out.println(safeChar("HELLO", 10)); // ?
-}
-
-private char safeChar(String word, int index) {
-    // TODO
-}
-```
-
-## Problem 6 — Add Javadocs to a Return Method
-Write Javadocs and complete the method.
-
-```java
-private String repeat(String s, int times) {
-    // TODO
-}
-```
-
-## Problem 7 — Validate Input Using Exceptions
-Return true only if the user enters a number between 1 and 10.
-
-```java
-private boolean isValidRange(int n) {
-    // TODO
-}
-```
-
-## Problem 8 — Detect NumberFormatException
-Ask the user for a number as a string, convert it, and handle invalid cases.
-
-```java
-public void run() {
-    String s = readLine("Enter a number: ");
-    // TODO: convert safely
-}
-```
-
-## Problem 9 — Document and Write a Method That Throws an Error
-Throw an IllegalArgumentException if the radius is negative.
+## Problem 9 — Throwing Your Own Exception  
+Write a method to compute the area of a circle.  
+**HINT:** If `r` is negative, throw an `IllegalArgumentException` with a helpful message.
 
 ```java
 private double areaOfCircle(double r) {
@@ -408,12 +411,17 @@ private double areaOfCircle(double r) {
 }
 ```
 
-## Problem 10 — try/catch and Return Values
-Return the integer entered by the user, or −1 if the input is invalid.
+## Problem 10 — Safe String Index Lookup  
+Write a method that safely returns the character at a given index in a string.  
+Do **not** let the program crash.
+
+**HINT:**  
+- If the index is valid, return the character at that position.  
+- If the index is invalid (negative or too large), return `'?'`.  
+- Do **not** use exceptions — handle it with logic and bounds checking.
 
 ```java
-private int safeReadInt() {
+private char safeIndex(String word, int index) {
     // TODO
 }
 ```
-
