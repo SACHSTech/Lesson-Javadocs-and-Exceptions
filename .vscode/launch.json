@@ -7,12 +7,6 @@
         "request": "launch",
         "mainClass": "ConsoleProgram",
         "args": "${fileBasenameNoExtension}"
-      },
-      {
-        "type": "java",
-        "name": "Launch Processing Sketch",
-        "request": "launch",
-        "mainClass": "Sketch"
       }
     ]
   }
